@@ -1,0 +1,25 @@
+img {
+  margin-top: 15px;
+  border-radius: 50%;
+  width: 250px;
+  transition: width 1s;
+  border: 10px solid black;
+}
+
+img:hover {
+  width: 280px;
+  cursor: pointer;
+}
+
+.state-buttons {
+  margin-top: 15px;
+}
+
+.timer {
+  font-size: 3.5rem;
+}
+
+.circle-timer {
+  margin-left: 500px;
+  margin-top: -250px;
+}
