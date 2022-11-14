@@ -1,11 +1,14 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, FunctionComponent } from 'react';
 import './Query.css';
 import { GiConfirmed } from 'react-icons/gi';
 
-const Query = () => {
+const Query: FunctionComponent = () => {
   return (
     <Fragment>
-      <input placeholder="What are you working on? =)" />
+      <input
+        className="query-input"
+        placeholder="What are you working on? =)"
+      />
       <GiConfirmed className="confirm-query" />
     </Fragment>
   );

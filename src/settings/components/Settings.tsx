@@ -3,7 +3,9 @@ import React from 'react';
 const Settings = () => {
   return (
     <div>
-      <button>Settings</button>
+      <input />
+      <input />
+      <input />
     </div>
   );
 };
