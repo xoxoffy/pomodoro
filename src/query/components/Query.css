@@ -18,6 +18,6 @@
   color: grey;
 }
 
-.confirm-query:hover {
-  color: rgb(250, 68, 36);
+.confirm-query__empty {
+  cursor: not-allowed;
 }

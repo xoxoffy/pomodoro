@@ -5,6 +5,9 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { useSelector } from 'react-redux/es/exports';
+import { useDispatch } from 'react-redux/es/hooks/useDispatch';
+import { timerActions } from '../../store/slices/timerSlice';
 import './Timer.css';
 
 const Timer: FunctionComponent = () => {
@@ -12,8 +15,10 @@ const Timer: FunctionComponent = () => {
   const INITIAL_SHORT_BREAK_TIME_IN_SECONDS = 5 * 60; // 5 minutes
   let intervalCount = 0;
 
+  const dispatch = useDispatch();
+  const active = useSelector((state: any) => state.timer.isTimerActive);
+
   const [timer, setTimer] = useState(INITIAL_TIME_IN_SECONDS);
-  const [active, setActive] = useState(false);
 
   useEffect(() => {
     if (active) {
@@ -21,14 +26,8 @@ const Timer: FunctionComponent = () => {
         setTimer((prevTime) => prevTime - 1);
       }, 1000);
 
-      if (timer === 0 && intervalCount === 1) {
-        setActive(false);
-        clearInterval(interval);
-        setTimer(INITIAL_TIME_IN_SECONDS);
-      }
-
       if (timer === 0) {
-        setActive(false);
+        dispatch(timerActions.toggleTimer());
         clearInterval(interval);
         setTimer(INITIAL_TIME_IN_SECONDS);
       }
@@ -51,7 +50,7 @@ const Timer: FunctionComponent = () => {
       </div>
       <br />
       <img
-        onClick={() => setActive(!active)}
+        onClick={() => dispatch(timerActions.toggleTimer())}
         src="https://i.pinimg.com/originals/8c/5b/1e/8c5b1e51887a9c76d35c27da5a133d1d.jpg"
       />
       <h1 className="task">Task</h1>
