@@ -12,16 +12,23 @@ import { timerActions } from '../../store/slices/timerSlice';
 import './Timer.css';
 
 const Timer: FunctionComponent = () => {
-  const INITIAL_TIME_IN_SECONDS = 25 * 60; // 25 minutes
+  const INITIAL_WORK_TIME_IN_SECONDS = 25 * 60; // 25 minutes
   const INITIAL_SHORT_BREAK_TIME_IN_SECONDS = 5 * 60; // 5 minutes
-  let intervalCount = 0;
+  const INITIAL_LONG_BREAK_TIME_IN_SECONDS = 15 * 60; // 15 minutes
+
+  const [intervalCount, setIntervalCount] = useState(0);
 
   const dispatch = useDispatch();
   const active = useSelector((state: any) => state.timer.isTimerActive);
   const task = useSelector((state: any) => state.query.task);
   const taskIsAccepted = useSelector((state: any) => state.query.isTaskVisible);
 
-  const [timer, setTimer] = useState(INITIAL_TIME_IN_SECONDS);
+  const activateTaskHandler = () => {
+    dispatch(queryActions.toggleTask());
+    dispatch(timerActions.toggleTimer());
+  };
+
+  const [timer, setTimer] = useState(INITIAL_WORK_TIME_IN_SECONDS);
 
   useEffect(() => {
     if (active) {
@@ -29,11 +36,79 @@ const Timer: FunctionComponent = () => {
         setTimer((prevTime) => prevTime - 1);
       }, 1000);
 
-      if (timer === 0) {
+      if (timer === 1495 && intervalCount === 0) {
+        // worktimer 0 work 1
         dispatch(timerActions.toggleTimer());
         clearInterval(interval);
-        setTimer(INITIAL_TIME_IN_SECONDS);
+        setTimer(INITIAL_SHORT_BREAK_TIME_IN_SECONDS);
+        dispatch(queryActions.toggleTask());
+        setIntervalCount((prevCount) => prevCount + 1);
       }
+      console.log(intervalCount);
+      if (timer === 295 && intervalCount === 1) {
+        // shortBr timer 0 shortbr 1
+        dispatch(timerActions.toggleTimer());
+        clearInterval(interval);
+        setTimer(INITIAL_WORK_TIME_IN_SECONDS);
+        dispatch(queryActions.toggleTask());
+        setIntervalCount((prevCount) => prevCount + 1);
+      }
+
+      if (timer === 1495 && intervalCount === 2) {
+        // worktimer 0 work 2
+        dispatch(timerActions.toggleTimer());
+        clearInterval(interval);
+        setTimer(INITIAL_SHORT_BREAK_TIME_IN_SECONDS);
+        dispatch(queryActions.toggleTask());
+        setIntervalCount((prevCount) => prevCount + 1);
+      }
+
+      if (timer === 295 && intervalCount === 3) {
+        // shortBr timer 0 shortbr 2
+        dispatch(timerActions.toggleTimer());
+        clearInterval(interval);
+        setTimer(INITIAL_WORK_TIME_IN_SECONDS);
+        dispatch(queryActions.toggleTask());
+        setIntervalCount((prevCount) => prevCount + 1);
+      }
+
+      if (timer === 1495 && intervalCount === 4) {
+        // worktimer 0 work 3
+        dispatch(timerActions.toggleTimer());
+        clearInterval(interval);
+        setTimer(INITIAL_SHORT_BREAK_TIME_IN_SECONDS);
+        dispatch(queryActions.toggleTask());
+        setIntervalCount((prevCount) => prevCount + 1);
+      }
+
+      if (timer === 295 && intervalCount === 5) {
+        // shortBr timer 0 shortbr 3
+        dispatch(timerActions.toggleTimer());
+        clearInterval(interval);
+        setTimer(INITIAL_WORK_TIME_IN_SECONDS);
+        dispatch(queryActions.toggleTask());
+        setIntervalCount((prevCount) => prevCount + 1);
+      }
+
+      if (timer === 1495 && intervalCount === 6) {
+        // worktimer 0 work 4
+        dispatch(timerActions.toggleTimer());
+        clearInterval(interval);
+        setTimer(INITIAL_LONG_BREAK_TIME_IN_SECONDS);
+        dispatch(queryActions.toggleTask());
+        setIntervalCount((prevCount) => prevCount + 1);
+      }
+
+      if (timer === 895 && intervalCount === 7) {
+        // longBR 1
+        dispatch(timerActions.toggleTimer());
+        clearInterval(interval);
+        setTimer(INITIAL_WORK_TIME_IN_SECONDS);
+        dispatch(queryActions.toggleTask());
+        setIntervalCount(0);
+      }
+      console.log(intervalCount);
+
       return () => {
         clearInterval(interval);
       };
@@ -42,11 +117,6 @@ const Timer: FunctionComponent = () => {
 
   const minutes = useMemo(() => Math.floor(timer / 60), [timer]);
   const seconds = useMemo(() => timer % 60, [timer]);
-
-  const activateTaskHandler = () => {
-    dispatch(queryActions.toggleTask());
-    dispatch(timerActions.toggleTimer());
-  };
 
   return (
     <Fragment>
