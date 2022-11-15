@@ -9,6 +9,8 @@ const initialTimerState = {
   shortBreakTimer: INITIAL_SHORT_BREAK_TIME_IN_SECONDS,
   longBreakTimer: INITIAL_LONG_BREAK_TIME_IN_SECONDS,
   isTimerActive: false,
+  intervalCount: 0,
+  pomodoroState: 'work',
 };
 
 const timerSlice = createSlice({
@@ -17,6 +19,15 @@ const timerSlice = createSlice({
   reducers: {
     toggleTimer(state) {
       state.isTimerActive = !state.isTimerActive;
+    },
+    increaseIntervalCount(state) {
+      state.intervalCount++;
+    },
+    resetIntervalCount(state) {
+      state.intervalCount = 0;
+    },
+    changePomodoroState(state, action) {
+      state.pomodoroState = action.payload;
     },
   },
 });

@@ -16,19 +16,20 @@ const Timer: FunctionComponent = () => {
   const INITIAL_SHORT_BREAK_TIME_IN_SECONDS = 5 * 60; // 5 minutes
   const INITIAL_LONG_BREAK_TIME_IN_SECONDS = 15 * 60; // 15 minutes
 
-  const [intervalCount, setIntervalCount] = useState(0);
+  const [timer, setTimer] = useState(INITIAL_WORK_TIME_IN_SECONDS);
 
   const dispatch = useDispatch();
   const active = useSelector((state: any) => state.timer.isTimerActive);
   const task = useSelector((state: any) => state.query.task);
   const taskIsAccepted = useSelector((state: any) => state.query.isTaskVisible);
+  const intervalCount = useSelector((state: any) => state.timer.intervalCount);
 
-  const activateTaskHandler = () => {
+  const activateTask = (interval: any) => {
     dispatch(queryActions.toggleTask());
     dispatch(timerActions.toggleTimer());
-  };
 
-  const [timer, setTimer] = useState(INITIAL_WORK_TIME_IN_SECONDS);
+    clearInterval(interval);
+  };
 
   useEffect(() => {
     if (active) {
@@ -37,75 +38,59 @@ const Timer: FunctionComponent = () => {
       }, 1000);
 
       if (timer === 1495 && intervalCount === 0) {
-        // worktimer 0 work 1
-        dispatch(timerActions.toggleTimer());
-        clearInterval(interval);
+        activateTask(interval);
         setTimer(INITIAL_SHORT_BREAK_TIME_IN_SECONDS);
-        dispatch(queryActions.toggleTask());
-        setIntervalCount((prevCount) => prevCount + 1);
+        dispatch(timerActions.increaseIntervalCount());
+        dispatch(timerActions.changePomodoroState('shortBreak'));
       }
       console.log(intervalCount);
       if (timer === 295 && intervalCount === 1) {
-        // shortBr timer 0 shortbr 1
-        dispatch(timerActions.toggleTimer());
-        clearInterval(interval);
+        activateTask(interval);
         setTimer(INITIAL_WORK_TIME_IN_SECONDS);
-        dispatch(queryActions.toggleTask());
-        setIntervalCount((prevCount) => prevCount + 1);
+        dispatch(timerActions.increaseIntervalCount());
+        dispatch(timerActions.changePomodoroState('work'));
       }
 
       if (timer === 1495 && intervalCount === 2) {
-        // worktimer 0 work 2
-        dispatch(timerActions.toggleTimer());
-        clearInterval(interval);
+        activateTask(interval);
         setTimer(INITIAL_SHORT_BREAK_TIME_IN_SECONDS);
-        dispatch(queryActions.toggleTask());
-        setIntervalCount((prevCount) => prevCount + 1);
+        dispatch(timerActions.increaseIntervalCount());
+        dispatch(timerActions.changePomodoroState('shortBreak'));
       }
 
       if (timer === 295 && intervalCount === 3) {
-        // shortBr timer 0 shortbr 2
-        dispatch(timerActions.toggleTimer());
-        clearInterval(interval);
+        activateTask(interval);
         setTimer(INITIAL_WORK_TIME_IN_SECONDS);
-        dispatch(queryActions.toggleTask());
-        setIntervalCount((prevCount) => prevCount + 1);
+        dispatch(timerActions.increaseIntervalCount());
+        dispatch(timerActions.changePomodoroState('work'));
       }
 
       if (timer === 1495 && intervalCount === 4) {
-        // worktimer 0 work 3
-        dispatch(timerActions.toggleTimer());
-        clearInterval(interval);
+        activateTask(interval);
         setTimer(INITIAL_SHORT_BREAK_TIME_IN_SECONDS);
-        dispatch(queryActions.toggleTask());
-        setIntervalCount((prevCount) => prevCount + 1);
+        dispatch(timerActions.increaseIntervalCount());
+        dispatch(timerActions.changePomodoroState('shortBreak'));
       }
 
       if (timer === 295 && intervalCount === 5) {
-        // shortBr timer 0 shortbr 3
-        dispatch(timerActions.toggleTimer());
-        clearInterval(interval);
+        activateTask(interval);
         setTimer(INITIAL_WORK_TIME_IN_SECONDS);
-        dispatch(queryActions.toggleTask());
-        setIntervalCount((prevCount) => prevCount + 1);
+        dispatch(timerActions.increaseIntervalCount());
+        dispatch(timerActions.changePomodoroState('work'));
       }
 
       if (timer === 1495 && intervalCount === 6) {
-        // worktimer 0 work 4
-        dispatch(timerActions.toggleTimer());
-        clearInterval(interval);
+        activateTask(interval);
         setTimer(INITIAL_LONG_BREAK_TIME_IN_SECONDS);
-        dispatch(queryActions.toggleTask());
-        setIntervalCount((prevCount) => prevCount + 1);
+        dispatch(timerActions.increaseIntervalCount());
+        dispatch(timerActions.changePomodoroState('longBreak'));
       }
 
       if (timer === 895 && intervalCount === 7) {
-        // longBR 1
-        dispatch(timerActions.toggleTimer());
-        clearInterval(interval);
+        activateTask(interval);
         setTimer(INITIAL_WORK_TIME_IN_SECONDS);
-        dispatch(queryActions.toggleTask());
-        setIntervalCount(0);
+        dispatch(timerActions.resetIntervalCount());
+        dispatch(timerActions.changePomodoroState('work'));
       }
       console.log(intervalCount);
 
@@ -118,6 +103,14 @@ const Timer: FunctionComponent = () => {
   const minutes = useMemo(() => Math.floor(timer / 60), [timer]);
   const seconds = useMemo(() => timer % 60, [timer]);
 
+  // const previousPomodoroState = () => {
+  //   setIntervalCount((prevIntervalCount) => prevIntervalCount - 1);
+  // };
+
+  // const skipCurrentPomodoroState = () => {
+  //   setIntervalCount((prevIntervalCount) => prevIntervalCount + 1);
+  // };
+
   return (
     <Fragment>
       <br />
@@ -128,13 +121,17 @@ const Timer: FunctionComponent = () => {
       </div>
       <br />
       <img
-        onClick={activateTaskHandler}
+        onClick={activateTask}
         src="https://i.pinimg.com/originals/8c/5b/1e/8c5b1e51887a9c76d35c27da5a133d1d.jpg"
       />
       <h1 className="task">{active && taskIsAccepted && task}</h1>
       <h1 className="timer">
         {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
       </h1>
+      <div style={{ marginTop: '-35px' }}>
+        <button>PREV</button> <button>SKIP</button>
+      </div>
+      <br />
     </Fragment>
   );
 };
