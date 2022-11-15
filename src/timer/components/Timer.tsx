@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux/es/hooks/useDispatch';
 import { queryActions } from '../../store/slices/querySlice';
 import { timerActions } from '../../store/slices/timerSlice';
 import './Timer.css';
+import { messages } from '../../assets/BreakMessages';
 
 const Timer: FunctionComponent = () => {
   const INITIAL_WORK_TIME_IN_SECONDS = 25 * 60; // 25 minutes
@@ -23,6 +24,12 @@ const Timer: FunctionComponent = () => {
   const task = useSelector((state: any) => state.query.task);
   const taskIsAccepted = useSelector((state: any) => state.query.isTaskVisible);
   const intervalCount = useSelector((state: any) => state.timer.intervalCount);
+  const isBreakTime = useSelector((state: any) => state.timer.pomodoroState);
+
+  const randomBreakMessage = useMemo(
+    () => messages[Math.floor(Math.random() * 5)].text,
+    [isBreakTime]
+  );
 
   const activateTask = (interval: any) => {
     dispatch(queryActions.toggleTask());
@@ -125,6 +132,10 @@ const Timer: FunctionComponent = () => {
         src="https://i.pinimg.com/originals/8c/5b/1e/8c5b1e51887a9c76d35c27da5a133d1d.jpg"
       />
       <h1 className="task">{active && taskIsAccepted && task}</h1>
+      <h1>
+        {(isBreakTime === 'shortBreak' || isBreakTime === 'longBreak') &&
+          randomBreakMessage}
+      </h1>
       <h1 className="timer">
         {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
       </h1>
