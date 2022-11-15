@@ -4,7 +4,7 @@ const INITIAL_TIME_IN_SECONDS = 25 * 60; // 25 minutes
 const INITIAL_SHORT_BREAK_TIME_IN_SECONDS = 5 * 60; // 5 minutes
 const INITIAL_LONG_BREAK_TIME_IN_SECONDS = 15 * 60; // 15 minutes
 
-const initialTimerSlice = {
+const initialTimerState = {
   workTimer: INITIAL_TIME_IN_SECONDS,
   shortBreakTimer: INITIAL_SHORT_BREAK_TIME_IN_SECONDS,
   longBreakTimer: INITIAL_LONG_BREAK_TIME_IN_SECONDS,
@@ -13,7 +13,7 @@ const initialTimerSlice = {
 
 const timerSlice = createSlice({
   name: 'timer',
-  initialState: initialTimerSlice,
+  initialState: initialTimerState,
   reducers: {
     toggleTimer(state) {
       state.isTimerActive = !state.isTimerActive;
