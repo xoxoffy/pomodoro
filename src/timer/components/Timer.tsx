@@ -21,8 +21,9 @@ const Timer: FunctionComponent = () => {
 
   const dispatch = useDispatch();
   const active = useSelector((state: any) => state.timer.isTimerActive);
-  const task = useSelector((state: any) => state.query.task);
   const taskIsAccepted = useSelector((state: any) => state.query.isTaskVisible);
+
+  const task = useSelector((state: any) => state.query.task);
   const intervalCount = useSelector((state: any) => state.timer.intervalCount);
   const isBreakTime = useSelector((state: any) => state.timer.pomodoroState);
 
@@ -142,7 +143,6 @@ const Timer: FunctionComponent = () => {
       <div style={{ marginTop: '-35px' }}>
         <button>PREV</button> <button>SKIP</button>
       </div>
-      <br />
     </Fragment>
   );
 };

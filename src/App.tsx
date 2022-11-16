@@ -1,4 +1,5 @@
 import { FunctionComponent, useState } from 'react';
+import AudioPlayer from './audioplayer/components/AudioPlayer';
 import Header from './header/Header';
 import Query from './query/components/Query';
 import Settings from './settings/components/Settings';
@@ -15,6 +16,7 @@ const App: FunctionComponent = () => {
       <Timer />
       <SettingsButton />
       <Settings />
+      <AudioPlayer />
     </div>
   );
 };

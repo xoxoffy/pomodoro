@@ -1,11 +1,14 @@
 import React from 'react';
+import LongBreakTimeSetting from './LongBreakTimeSetting';
+import ShortBreakTimeSetting from './ShortBreakTimeSetting';
+import WorkTimeSetting from './WorkTimeSetting';
 
 const Settings = () => {
   return (
     <div>
-      <input />
-      <input />
-      <input />
+      <WorkTimeSetting />
+      <ShortBreakTimeSetting />
+      <LongBreakTimeSetting />
     </div>
   );
 };
