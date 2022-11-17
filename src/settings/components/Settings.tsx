@@ -1,14 +1,38 @@
-import React from 'react';
-import LongBreakTimeSetting from './LongBreakTimeSetting';
-import ShortBreakTimeSetting from './ShortBreakTimeSetting';
-import WorkTimeSetting from './WorkTimeSetting';
+import { useDispatch } from 'react-redux';
+import './Settings.css';
+import { useState } from 'react';
 
 const Settings = () => {
+  const [workTime, setWorkTime] = useState<number>();
+  const [shortBreakTime, setShortBreakTime] = useState<number>();
+  const [longBreakTime, setLongBreakTime] = useState<number>();
+
+  const dispatch = useDispatch();
+
+  const settingConfirmHandler = () => {};
+
   return (
-    <div>
-      <WorkTimeSetting />
-      <ShortBreakTimeSetting />
-      <LongBreakTimeSetting />
+    <div className="settings-inputs">
+      <form>
+        <input
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            setWorkTime(event.target.value)
+          }
+          placeholder="Custom worktime"
+        />
+      </form>
+      <form>
+        <input
+          onChange={(event) => setShortBreakTime(event.target.value)}
+          placeholder="Custom short break time"
+        />
+      </form>
+      <form>
+        <input
+          onChange={(event) => setLongBreakTime(event.target.value)}
+          placeholder="Custom long break time"
+        />
+      </form>
     </div>
   );
 };

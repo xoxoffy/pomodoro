@@ -13,11 +13,11 @@ import './Timer.css';
 import { breakMessages, workMessages } from '../../assets/messages';
 import { BsFillSkipEndFill } from 'react-icons/bs';
 
-const Timer: FunctionComponent = () => {
-  const INITIAL_WORK_TIME_IN_SECONDS = 25 * 60; // 25 minutes
-  const INITIAL_SHORT_BREAK_TIME_IN_SECONDS = 5 * 60; // 5 minutes
-  const INITIAL_LONG_BREAK_TIME_IN_SECONDS = 15 * 60; // 15 minutes
+const INITIAL_WORK_TIME_IN_SECONDS = 25 * 60; // 25 minutes
+const INITIAL_SHORT_BREAK_TIME_IN_SECONDS = 5 * 60; // 5 minutes
+const INITIAL_LONG_BREAK_TIME_IN_SECONDS = 15 * 60; // 15 minutes
 
+const Timer: FunctionComponent = () => {
   const [timer, setTimer] = useState(INITIAL_WORK_TIME_IN_SECONDS);
 
   const dispatch = useDispatch();
@@ -45,6 +45,26 @@ const Timer: FunctionComponent = () => {
     clearInterval(interval);
   };
 
+  const activateWorkState = (interval?: any, pomodoroState?: string) => {
+    activateTask(interval);
+
+    setTimer(INITIAL_WORK_TIME_IN_SECONDS);
+    dispatch(timerActions.increaseIntervalCount());
+    dispatch(timerActions.changePomodoroState(pomodoroState));
+  };
+
+  const activateBreakState = (interval?: any, pomodoroState?: string) => {
+    activateTask(interval);
+
+    if (pomodoroState === 'shortBreak') {
+      setTimer(INITIAL_SHORT_BREAK_TIME_IN_SECONDS);
+    } else {
+      setTimer(INITIAL_LONG_BREAK_TIME_IN_SECONDS);
+    }
+    dispatch(timerActions.increaseIntervalCount());
+    dispatch(timerActions.changePomodoroState(pomodoroState));
+  };
+
   useEffect(() => {
     if (active) {
       const interval = setInterval(() => {
@@ -52,52 +72,31 @@ const Timer: FunctionComponent = () => {
       }, 1000);
 
       if (timer === 0 && intervalCount === 0) {
-        activateTask(interval);
-        setTimer(INITIAL_SHORT_BREAK_TIME_IN_SECONDS);
-        dispatch(timerActions.increaseIntervalCount());
-        dispatch(timerActions.changePomodoroState('shortBreak'));
+        activateBreakState(interval, 'shortBreak');
       }
 
       if (timer === 0 && intervalCount === 1) {
-        activateTask(interval);
-        setTimer(INITIAL_WORK_TIME_IN_SECONDS);
-        dispatch(timerActions.increaseIntervalCount());
-        dispatch(timerActions.changePomodoroState('work'));
+        activateWorkState(interval, 'work');
       }
 
       if (timer === 0 && intervalCount === 2) {
-        activateTask(interval);
-        setTimer(INITIAL_SHORT_BREAK_TIME_IN_SECONDS);
-        dispatch(timerActions.increaseIntervalCount());
-        dispatch(timerActions.changePomodoroState('shortBreak'));
+        activateBreakState(interval, 'shortBreak');
       }
 
       if (timer === 0 && intervalCount === 3) {
-        activateTask(interval);
-        setTimer(INITIAL_WORK_TIME_IN_SECONDS);
-        dispatch(timerActions.increaseIntervalCount());
-        dispatch(timerActions.changePomodoroState('work'));
+        activateWorkState(interval, 'work');
       }
 
       if (timer === 0 && intervalCount === 4) {
-        activateTask(interval);
-        setTimer(INITIAL_SHORT_BREAK_TIME_IN_SECONDS);
-        dispatch(timerActions.increaseIntervalCount());
-        dispatch(timerActions.changePomodoroState('shortBreak'));
+        activateBreakState(interval, 'shortBreak');
       }
 
       if (timer === 0 && intervalCount === 5) {
-        activateTask(interval);
-        setTimer(INITIAL_WORK_TIME_IN_SECONDS);
-        dispatch(timerActions.increaseIntervalCount());
-        dispatch(timerActions.changePomodoroState('work'));
+        activateWorkState(interval, 'work');
       }
 
       if (timer === 0 && intervalCount === 6) {
-        activateTask(interval);
-        setTimer(INITIAL_LONG_BREAK_TIME_IN_SECONDS);
-        dispatch(timerActions.increaseIntervalCount());
-        dispatch(timerActions.changePomodoroState('longBreak'));
+        activateBreakState(interval, 'longBreak');
       }
 
       if (timer === 0 && intervalCount === 7) {
@@ -126,10 +125,23 @@ const Timer: FunctionComponent = () => {
     <Fragment>
       <br />
       <div className="state-buttons">
-        <button>Working!</button>
-        <button>Short Break</button>
-        <button>Long Break</button>
+        <button onClick={activateWorkState}>Working!</button>
+        <button onClick={() => activateBreakState(undefined, 'shortBreak')}>
+          Short Break
+        </button>
+        <button onClick={() => activateBreakState(undefined, 'longBreak')}>
+          Long Break
+        </button>
+        <label className="toggle">
+          <input type="checkbox" />
+          <span
+            className="labels"
+            data-on="Auto-Start: ON"
+            data-off="Auto-Start: OFF"
+          ></span>
+        </label>
       </div>
+
       <br />
       <img
         onClick={activateTask}

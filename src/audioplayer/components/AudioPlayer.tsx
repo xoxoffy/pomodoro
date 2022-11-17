@@ -8,8 +8,6 @@ const AudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const pomodoroState = useSelector((state: any) => state.timer.pomodoroState);
 
-  console.log(pomodoroState);
-
   // const music = pomodoroState === 'work' && workMusic;
 
   const audioRef = useRef(new Audio(breakMusic));

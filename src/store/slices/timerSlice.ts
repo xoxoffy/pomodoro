@@ -29,6 +29,15 @@ const timerSlice = createSlice({
     changePomodoroState(state, action) {
       state.pomodoroState = action.payload;
     },
+    changeWorkTimer(state, action) {
+      state.workTimer = action.payload;
+    },
+    changeShortBreakTimer(state, action) {
+      state.shortBreakTimer = action.payload;
+    },
+    changeLongBreakTimer(state, action) {
+      state.longBreakTimer = action.payload;
+    },
   },
 });
 

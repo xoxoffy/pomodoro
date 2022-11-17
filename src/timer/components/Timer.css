@@ -41,8 +41,22 @@ img:active {
   top: 1px;
 }
 
+.autostart {
+  padding: 6px 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+  border-radius: 6px;
+  border: none;
+  background: #6e6d70;
+  box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1),
+    inset 0px 0.5px 0.5px rgba(255, 255, 255, 0.5),
+    0px 0px 0px 0.5px rgba(0, 0, 0, 0.12);
+  color: #dfdedf;
+}
+
 .timer {
+  position: relative;
   font-size: 3.5rem;
+  margin-top: -15px;
 }
 
 .circle-timer {
@@ -55,4 +69,74 @@ img:active {
   position: relative;
   left: 10px;
   top: 10px;
+}
+.toggle {
+  --width: 100px;
+  --height: calc(var(--width) / 3);
+
+  position: relative;
+  display: inline-block;
+  width: var(--width);
+  height: var(--height);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  top: 10px;
+  border: 1px solid black;
+}
+
+.toggle input {
+  display: none;
+}
+
+.toggle .labels {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 12px;
+  font-family: sans-serif;
+  transition: all 0.4s ease-in-out;
+  overflow: hidden;
+}
+
+.toggle .labels::after {
+  content: attr(data-off);
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  color: #ffffff;
+  background-color: tomato;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+  transition: all 0.4s ease-in-out;
+}
+
+.toggle .labels::before {
+  content: attr(data-on);
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: calc(var(--width) * -1);
+  height: 100%;
+  width: 100%;
+  color: #ffffff;
+  background-color: #4fe132;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.4);
+  transition: all 0.4s ease-in-out;
+}
+
+.toggle input:checked ~ .labels::after {
+  transform: translateX(var(--width));
+}
+
+.toggle input:checked ~ .labels::before {
+  transform: translateX(var(--width));
 }

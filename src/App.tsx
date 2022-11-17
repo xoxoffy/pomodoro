@@ -3,8 +3,8 @@ import AudioPlayer from './audioplayer/components/AudioPlayer';
 import Header from './header/Header';
 import Query from './query/components/Query';
 import Settings from './settings/components/Settings';
-import SettingsButton from './settings/components/SettingsButton';
 import Timer from './timer/components/Timer';
+import './App.css';
 
 const App: FunctionComponent = () => {
   const [showSettings, setShowSettings] = useState<boolean>(false);
@@ -14,9 +14,14 @@ const App: FunctionComponent = () => {
       <Header />
       <Query />
       <Timer />
-      <SettingsButton />
-      <Settings />
       <AudioPlayer />
+      <button
+        className="settings-button"
+        onClick={() => setShowSettings(!showSettings)}
+      >
+        Show Timer Settings
+      </button>
+      {showSettings && <Settings />}
     </div>
   );
 };

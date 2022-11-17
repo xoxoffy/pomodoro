@@ -1,0 +1,24 @@
+.settings-button {
+  width: 150px;
+  height: 50px;
+
+  background-color: tomato;
+  border-radius: 4px;
+  border: 1px solid black;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 15px;
+  padding: 6px 15px;
+  text-decoration: solid;
+  margin-top: 15px;
+}
+.settings-button:hover {
+  background-color: #eb675e;
+}
+
+.settings-button:active {
+  position: relative;
+  top: 1px;
+}
