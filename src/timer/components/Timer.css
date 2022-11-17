@@ -49,3 +49,10 @@ img:active {
   margin-left: 500px;
   margin-top: -250px;
 }
+
+.skip-button {
+  width: 40px;
+  position: relative;
+  left: 10px;
+  top: 10px;
+}
