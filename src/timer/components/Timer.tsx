@@ -22,13 +22,13 @@ const Timer: FunctionComponent = () => {
     (state: any) => state.timer.longBreakTimer
   );
 
-  const [customWorkTime, setCustomWorkTime] = useState<number>(workTimer);
+  const [customTime, setCustomWorkTime] = useState<number>(workTimer);
   const [customShortBreakTime, setCustomShortBreakTime] =
     useState<number>(shortBreakTimer);
   const [customLongBreakTime, setCustomLongBreakTime] =
     useState<number>(longBreakTimer);
 
-  const [timer, setTimer] = useState(customWorkTime);
+  const [timer, setTimer] = useState(customTime);
 
   const dispatch = useDispatch();
   const active = useSelector((state: any) => state.timer.isTimerActive);
@@ -58,7 +58,7 @@ const Timer: FunctionComponent = () => {
   const activateWorkState = (interval?: any, pomodoroState?: string) => {
     activateTask(interval);
 
-    setTimer(customWorkTime);
+    setTimer(customTime);
     dispatch(timerActions.increaseIntervalCount());
     dispatch(timerActions.changePomodoroState(pomodoroState));
   };
@@ -111,7 +111,7 @@ const Timer: FunctionComponent = () => {
 
       if (timer === 0 && intervalCount === 7) {
         activateTask(interval);
-        setTimer(customWorkTime);
+        setTimer(customTime);
         dispatch(timerActions.resetIntervalCount());
         dispatch(timerActions.changePomodoroState('work'));
       }
@@ -134,12 +134,20 @@ const Timer: FunctionComponent = () => {
   const formSubmitHandler = (event) => {
     event.preventDefault();
 
-    setTimer(customWorkTime);
+    setTimer(customTime);
   };
 
   return (
     <Fragment>
       <br />
+      <label className="toggle">
+        <input type="checkbox" />
+        <span
+          className="labels"
+          data-on="Auto-Start: ON"
+          data-off="Auto-Start: OFF"
+        ></span>
+      </label>
       <div className="state-buttons">
         <button onClick={activateWorkState}>Working!</button>
         <button
@@ -154,14 +162,6 @@ const Timer: FunctionComponent = () => {
         >
           Long Break
         </button>
-        <label className="toggle">
-          <input type="checkbox" />
-          <span
-            className="labels"
-            data-on="Auto-Start: ON"
-            data-off="Auto-Start: OFF"
-          ></span>
-        </label>
       </div>
 
       <br />
