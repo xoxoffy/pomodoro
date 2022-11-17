@@ -1,37 +1,47 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './Settings.css';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { timerActions } from '../../store/slices/timerSlice';
 
 const Settings = () => {
-  const [workTime, setWorkTime] = useState<number>();
+  const [workTime, setWorkTime] = useState<number>(0);
   const [shortBreakTime, setShortBreakTime] = useState<number>();
   const [longBreakTime, setLongBreakTime] = useState<number>();
 
   const dispatch = useDispatch();
 
-  const settingConfirmHandler = () => {};
+  const active = useSelector((state: any) => state.timer.isTimerActive);
+  const taskIsAccepted = useSelector((state: any) => state.query.isTaskVisible);
+
+  const settingConfirmHandler = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    dispatch(timerActions.changeWorkTimer(workTime));
+  };
 
   return (
     <div className="settings-inputs">
-      <form>
+      <form onSubmit={settingConfirmHandler}>
         <input
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setWorkTime(event.target.value)
-          }
-          placeholder="Custom worktime"
+          onChange={(event) => setWorkTime(event.target.value)}
+          placeholder="Custom work time"
+          value={workTime}
         />
+        <button type="submit">Confirm</button>
       </form>
       <form>
         <input
           onChange={(event) => setShortBreakTime(event.target.value)}
           placeholder="Custom short break time"
         />
+        <button type="submit">Confirm</button>
       </form>
       <form>
         <input
           onChange={(event) => setLongBreakTime(event.target.value)}
           placeholder="Custom long break time"
         />
+        <button type="submit">Confirm</button>
       </form>
     </div>
   );

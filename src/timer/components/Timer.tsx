@@ -13,12 +13,22 @@ import './Timer.css';
 import { breakMessages, workMessages } from '../../assets/messages';
 import { BsFillSkipEndFill } from 'react-icons/bs';
 
-const INITIAL_WORK_TIME_IN_SECONDS = 25 * 60; // 25 minutes
-const INITIAL_SHORT_BREAK_TIME_IN_SECONDS = 5 * 60; // 5 minutes
-const INITIAL_LONG_BREAK_TIME_IN_SECONDS = 15 * 60; // 15 minutes
-
 const Timer: FunctionComponent = () => {
-  const [timer, setTimer] = useState(INITIAL_WORK_TIME_IN_SECONDS);
+  const workTimer = useSelector((state: any) => state.timer.workTimer);
+  const shortBreakTimer = useSelector(
+    (state: any) => state.timer.shortBreakTimer
+  );
+  const longBreakTimer = useSelector(
+    (state: any) => state.timer.longBreakTimer
+  );
+
+  const [customWorkTime, setCustomWorkTime] = useState<number>(workTimer);
+  const [customShortBreakTime, setCustomShortBreakTime] =
+    useState<number>(shortBreakTimer);
+  const [customLongBreakTime, setCustomLongBreakTime] =
+    useState<number>(longBreakTimer);
+
+  const [timer, setTimer] = useState(customWorkTime);
 
   const dispatch = useDispatch();
   const active = useSelector((state: any) => state.timer.isTimerActive);
@@ -48,7 +58,7 @@ const Timer: FunctionComponent = () => {
   const activateWorkState = (interval?: any, pomodoroState?: string) => {
     activateTask(interval);
 
-    setTimer(INITIAL_WORK_TIME_IN_SECONDS);
+    setTimer(customWorkTime);
     dispatch(timerActions.increaseIntervalCount());
     dispatch(timerActions.changePomodoroState(pomodoroState));
   };
@@ -57,9 +67,9 @@ const Timer: FunctionComponent = () => {
     activateTask(interval);
 
     if (pomodoroState === 'shortBreak') {
-      setTimer(INITIAL_SHORT_BREAK_TIME_IN_SECONDS);
+      setTimer(customShortBreakTime);
     } else {
-      setTimer(INITIAL_LONG_BREAK_TIME_IN_SECONDS);
+      setTimer(customLongBreakTime);
     }
     dispatch(timerActions.increaseIntervalCount());
     dispatch(timerActions.changePomodoroState(pomodoroState));
@@ -101,7 +111,7 @@ const Timer: FunctionComponent = () => {
 
       if (timer === 0 && intervalCount === 7) {
         activateTask(interval);
-        setTimer(INITIAL_WORK_TIME_IN_SECONDS);
+        setTimer(customWorkTime);
         dispatch(timerActions.resetIntervalCount());
         dispatch(timerActions.changePomodoroState('work'));
       }
@@ -121,15 +131,27 @@ const Timer: FunctionComponent = () => {
     }
   };
 
+  const formSubmitHandler = (event) => {
+    event.preventDefault();
+
+    setTimer(customWorkTime);
+  };
+
   return (
     <Fragment>
       <br />
       <div className="state-buttons">
         <button onClick={activateWorkState}>Working!</button>
-        <button onClick={() => activateBreakState(undefined, 'shortBreak')}>
+        <button
+          disabled={pomodoroState === 'shortBreak'}
+          onClick={() => activateBreakState(undefined, 'shortBreak')}
+        >
           Short Break
         </button>
-        <button onClick={() => activateBreakState(undefined, 'longBreak')}>
+        <button
+          disabled={pomodoroState === 'longBreak'}
+          onClick={() => activateBreakState(undefined, 'longBreak')}
+        >
           Long Break
         </button>
         <label className="toggle">
@@ -162,6 +184,30 @@ const Timer: FunctionComponent = () => {
           />
         )}
       </h1>
+      <form onSubmit={formSubmitHandler}>
+        <input
+          onChange={(event) => setCustomWorkTime(event.target.value)}
+          type="text"
+          placeholder="Custom Work Time"
+        />
+        <button>Change</button>
+      </form>
+      <form onSubmit={formSubmitHandler}>
+        <input
+          onChange={(event) => setCustomShortBreakTime(event.target.value)}
+          type="text"
+          placeholder="Custom Short Break Time"
+        />
+        <button>Change</button>
+      </form>
+      <form onSubmit={formSubmitHandler}>
+        <input
+          onChange={(event) => setCustomLongBreakTime(event.target.value)}
+          type="text"
+          placeholder="Custom Long Break Time"
+        />
+        <button>Change</button>
+      </form>
     </Fragment>
   );
 };

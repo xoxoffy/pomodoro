@@ -27,6 +27,7 @@ const Query: FunctionComponent = () => {
         placeholder="What are you working on? =)"
         type="text"
         disabled={taskIsAccepted}
+        maxLength={32}
       />
       {!taskIsAccepted ? (
         <GiConfirmed
