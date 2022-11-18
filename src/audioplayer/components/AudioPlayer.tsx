@@ -24,7 +24,7 @@ const AudioPlayer = () => {
   const playPause = isPlaying ? pause : play;
 
   return (
-    <div>
+    <div style={{ marginBottom: '20px' }}>
       <h1>Muzyczka</h1>
       {!isPlaying ? (
         <FaPlay onClick={playPause} />

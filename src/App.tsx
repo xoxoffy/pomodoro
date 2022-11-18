@@ -15,13 +15,15 @@ const App: FunctionComponent = () => {
       <Query />
       <Timer />
       <AudioPlayer />
-      <button
-        className="settings-button"
-        onClick={() => setShowSettings(!showSettings)}
-      >
-        Show Timer Settings
-      </button>
-      {showSettings && <Settings />}
+      {
+        // <button
+        //   className="settings-button"
+        //   onClick={() => setShowSettings(!showSettings)}
+        // >
+        //   Show Timer Settings
+        // </button>
+        // {showSettings && <Settings />}
+      }
     </div>
   );
 };

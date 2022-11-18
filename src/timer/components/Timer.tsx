@@ -1,4 +1,4 @@
-import {
+import React, {
   Fragment,
   FunctionComponent,
   useEffect,
@@ -22,13 +22,13 @@ const Timer: FunctionComponent = () => {
     (state: any) => state.timer.longBreakTimer
   );
 
-  const [customTime, setCustomWorkTime] = useState<number>(workTimer);
+  const [userTime, setCustomWorkTime] = useState<number>(workTimer);
   const [customShortBreakTime, setCustomShortBreakTime] =
     useState<number>(shortBreakTimer);
   const [customLongBreakTime, setCustomLongBreakTime] =
     useState<number>(longBreakTimer);
-
-  const [timer, setTimer] = useState(customTime);
+  const [timer, setTimer] = useState<number>(userTime);
+  const [autoStartIsOn, setAutoStartIsOn] = useState(false);
 
   const dispatch = useDispatch();
   const active = useSelector((state: any) => state.timer.isTimerActive);
@@ -56,16 +56,18 @@ const Timer: FunctionComponent = () => {
   };
 
   const activateWorkState = (interval?: any, pomodoroState?: string) => {
-    activateTask(interval);
-
-    setTimer(customTime);
+    if (autoStartIsOn && !active) {
+      activateTask(interval);
+    }
+    setTimer(userTime);
     dispatch(timerActions.increaseIntervalCount());
     dispatch(timerActions.changePomodoroState(pomodoroState));
   };
 
   const activateBreakState = (interval?: any, pomodoroState?: string) => {
-    activateTask(interval);
-
+    if (autoStartIsOn && !active) {
+      activateTask(interval);
+    }
     if (pomodoroState === 'shortBreak') {
       setTimer(customShortBreakTime);
     } else {
@@ -77,7 +79,7 @@ const Timer: FunctionComponent = () => {
 
   useEffect(() => {
     if (active) {
-      const interval = setInterval(() => {
+      const interval: number = setInterval(() => {
         setTimer((prevTime) => prevTime - 1);
       }, 1000);
 
@@ -110,8 +112,10 @@ const Timer: FunctionComponent = () => {
       }
 
       if (timer === 0 && intervalCount === 7) {
-        activateTask(interval);
-        setTimer(customTime);
+        if (!autoStartIsOn) {
+          activateTask(interval);
+        }
+        setTimer(userTime);
         dispatch(timerActions.resetIntervalCount());
         dispatch(timerActions.changePomodoroState('work'));
       }
@@ -131,17 +135,24 @@ const Timer: FunctionComponent = () => {
     }
   };
 
-  const formSubmitHandler = (event) => {
+  const formSubmitHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
-    setTimer(customTime);
+    setTimer(userTime);
   };
 
   return (
     <Fragment>
       <br />
-      <label className="toggle">
-        <input type="checkbox" />
+      <label
+        className="toggle"
+        style={!active ? { cursor: 'pointer' } : { cursor: 'not-allowed' }}
+      >
+        <input
+          type="checkbox"
+          onChange={() => setAutoStartIsOn(!autoStartIsOn)}
+          disabled={active}
+        />
         <span
           className="labels"
           data-on="Auto-Start: ON"
