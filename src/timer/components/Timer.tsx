@@ -12,16 +12,17 @@ import { timerActions } from '../../store/slices/timerSlice';
 import './Timer.css';
 import { breakMessages, workMessages } from '../../assets/messages';
 import { BsFillSkipEndFill } from 'react-icons/bs';
+import { RootState } from '../../store/store';
 
 const Timer: FunctionComponent = () => {
-  const workTimer = useSelector((state: any) => state.timer.workTimer);
   const shortBreakTimer = useSelector(
-    (state: any) => state.timer.shortBreakTimer
+    (state: RootState) => state.timer.shortBreakTimer
   );
   const longBreakTimer = useSelector(
-    (state: any) => state.timer.longBreakTimer
+    (state: RootState) => state.timer.longBreakTimer
   );
 
+  const workTimer = useSelector((state: any) => state.timer.workTimer);
   const [userTime, setCustomWorkTime] = useState<number>(workTimer);
   const [customShortBreakTime, setCustomShortBreakTime] =
     useState<number>(shortBreakTimer);
@@ -37,16 +38,6 @@ const Timer: FunctionComponent = () => {
   const task = useSelector((state: any) => state.query.task);
   const intervalCount = useSelector((state: any) => state.timer.intervalCount);
   const pomodoroState = useSelector((state: any) => state.timer.pomodoroState);
-
-  const randomBreakMessage = useMemo(
-    () => breakMessages[Math.floor(Math.random() * 5)].text,
-    [pomodoroState]
-  );
-
-  const randomWorkMessage = useMemo(
-    () => workMessages[Math.floor(Math.random() * 5)].text,
-    [pomodoroState]
-  );
 
   const activateTask = (interval: any) => {
     dispatch(queryActions.toggleTask());
@@ -126,6 +117,16 @@ const Timer: FunctionComponent = () => {
     }
   }, [active, timer]);
 
+  const randomBreakMessage = useMemo(
+    () => breakMessages[Math.floor(Math.random() * breakMessages.length)].text,
+    [pomodoroState]
+  );
+
+  const randomWorkMessage = useMemo(
+    () => workMessages[Math.floor(Math.random() * workMessages.length)].text,
+    [pomodoroState]
+  );
+
   const minutes = useMemo(() => Math.floor(timer / 60), [timer]);
   const seconds = useMemo(() => timer % 60, [timer]);
 
@@ -182,9 +183,10 @@ const Timer: FunctionComponent = () => {
       <h1 className="task">{active && taskIsAccepted && task}</h1>
       <h1>
         {(pomodoroState === 'shortBreak' || pomodoroState === 'longBreak') &&
+          active &&
           randomBreakMessage}
       </h1>
-      <h1>{pomodoroState === 'work' && randomWorkMessage}</h1>
+      <h1>{pomodoroState === 'work' && active && randomWorkMessage}</h1>
       <h1 className="timer">
         {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
         {active && taskIsAccepted && (
@@ -196,7 +198,9 @@ const Timer: FunctionComponent = () => {
       </h1>
       <form onSubmit={formSubmitHandler}>
         <input
-          onChange={(event) => setCustomWorkTime(event.target.value)}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            setCustomWorkTime(event.target.value)
+          }
           type="text"
           placeholder="Custom Work Time"
         />
@@ -204,7 +208,9 @@ const Timer: FunctionComponent = () => {
       </form>
       <form onSubmit={formSubmitHandler}>
         <input
-          onChange={(event) => setCustomShortBreakTime(event.target.value)}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            setCustomShortBreakTime(event.target.value)
+          }
           type="text"
           placeholder="Custom Short Break Time"
         />
@@ -212,7 +218,9 @@ const Timer: FunctionComponent = () => {
       </form>
       <form onSubmit={formSubmitHandler}>
         <input
-          onChange={(event) => setCustomLongBreakTime(event.target.value)}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            setCustomLongBreakTime(event.target.value)
+          }
           type="text"
           placeholder="Custom Long Break Time"
         />

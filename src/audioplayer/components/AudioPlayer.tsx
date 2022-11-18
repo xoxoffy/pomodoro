@@ -21,15 +21,15 @@ const AudioPlayer = () => {
     audioRef.current.pause();
   };
 
-  const playPause = isPlaying ? pause : play;
+  const isPlayOrPause = isPlaying ? pause : play;
 
   return (
     <div style={{ marginBottom: '20px' }}>
       <h1>Muzyczka</h1>
       {!isPlaying ? (
-        <FaPlay onClick={playPause} />
+        <FaPlay onClick={isPlayOrPause} />
       ) : (
-        <FaPause onClick={playPause} />
+        <FaPause onClick={isPlayOrPause} />
       )}
     </div>
   );
