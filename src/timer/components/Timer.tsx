@@ -56,7 +56,7 @@ const Timer: FunctionComponent = () => {
   };
 
   const activateWorkState = (interval?: any, pomodoroState?: string) => {
-    if (autoStartIsOn && !active) {
+    if (!autoStartIsOn && active) {
       activateTask(interval);
     }
     setTimer(userTime);
@@ -65,7 +65,7 @@ const Timer: FunctionComponent = () => {
   };
 
   const activateBreakState = (interval?: any, pomodoroState?: string) => {
-    if (autoStartIsOn && !active) {
+    if (!autoStartIsOn && active) {
       activateTask(interval);
     }
     if (pomodoroState === 'shortBreak') {
@@ -134,7 +134,6 @@ const Timer: FunctionComponent = () => {
       setTimer(0);
     }
   };
-
   const formSubmitHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
