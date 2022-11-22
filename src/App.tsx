@@ -24,7 +24,6 @@ const App: FunctionComponent = () => {
         // </button>
         // {showSettings && <Settings />}
       }
-      test
     </div>
   );
 };
