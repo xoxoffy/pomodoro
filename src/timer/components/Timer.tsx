@@ -13,6 +13,7 @@ import './Timer.css';
 import { breakMessages, workMessages } from '../../assets/messages';
 import { BsFillSkipEndFill } from 'react-icons/bs';
 import { RootState } from '../../store/store';
+import TimerSettings from './../../../timerSettings/TimerForm';
 
 const Timer: FunctionComponent = () => {
   const shortBreakTimer = useSelector(
@@ -196,36 +197,12 @@ const Timer: FunctionComponent = () => {
           />
         )}
       </h1>
-      <form onSubmit={formSubmitHandler}>
-        <input
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setCustomWorkTime(event.target.value)
-          }
-          type="text"
-          placeholder="Custom Work Time"
-        />
-        <button>Change</button>
-      </form>
-      <form onSubmit={formSubmitHandler}>
-        <input
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setCustomShortBreakTime(event.target.value)
-          }
-          type="text"
-          placeholder="Custom Short Break Time"
-        />
-        <button>Change</button>
-      </form>
-      <form onSubmit={formSubmitHandler}>
-        <input
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setCustomLongBreakTime(event.target.value)
-          }
-          type="text"
-          placeholder="Custom Long Break Time"
-        />
-        <button>Change</button>
-      </form>
+      <TimerSettings
+        formSubmitHandler={formSubmitHandler}
+        setCustomWorkTime={setCustomWorkTime}
+        setCustomShortBreakTime={setCustomShortBreakTime}
+        setCustomLongBreakTime={setCustomLongBreakTime}
+      />
     </Fragment>
   );
 };
