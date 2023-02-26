@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import './TimerSettings.css';
 
 interface Props {
   formSubmitHandler: (event: React.FormEvent) => void;
@@ -14,7 +15,7 @@ const TimerSettings: React.FunctionComponent<Props> = ({
   setCustomLongBreakTime,
 }) => {
   return (
-    <Fragment>
+    <div className="settings">
       <form onSubmit={formSubmitHandler}>
         <input
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -45,7 +46,7 @@ const TimerSettings: React.FunctionComponent<Props> = ({
         />
         <button>Change</button>
       </form>
-    </Fragment>
+    </div>
   );
 };
 

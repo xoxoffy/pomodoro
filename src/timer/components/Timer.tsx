@@ -12,7 +12,7 @@ import { timerActions } from '../../store/slices/timerSlice';
 import './Timer.css';
 import { breakMessages, workMessages } from '../../assets/messages';
 import { RootState } from '../../store/store';
-import TimerSettings from './../../../timerSettings/TimerForm';
+import TimerSettings from '../../../timerSettings/TimerSettings';
 import TimerAutoStart from './../../../timerAutoStartButton/TimerAutoStart';
 import TimerBreakButtons from './../../../timerBreakButtons/TimerBreakButtons';
 import TimerCountdown from './../../../timerCountdown/TimerCountdown';
