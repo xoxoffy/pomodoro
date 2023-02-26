@@ -2,9 +2,9 @@ import React, { Fragment } from 'react';
 
 interface Props {
   formSubmitHandler: (event: React.FormEvent) => void;
-  setCustomWorkTime: () => void;
-  setCustomShortBreakTime: () => void;
-  setCustomLongBreakTime: () => void;
+  setCustomWorkTime: any;
+  setCustomShortBreakTime: any;
+  setCustomLongBreakTime: any;
 }
 
 const TimerSettings: React.FunctionComponent<Props> = ({

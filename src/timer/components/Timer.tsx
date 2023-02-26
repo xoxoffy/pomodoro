@@ -11,9 +11,11 @@ import { queryActions } from '../../store/slices/querySlice';
 import { timerActions } from '../../store/slices/timerSlice';
 import './Timer.css';
 import { breakMessages, workMessages } from '../../assets/messages';
-import { BsFillSkipEndFill } from 'react-icons/bs';
 import { RootState } from '../../store/store';
 import TimerSettings from './../../../timerSettings/TimerForm';
+import TimerAutoStart from './../../../timerAutoStartButton/TimerAutoStart';
+import TimerBreakButtons from './../../../timerBreakButtons/TimerBreakButtons';
+import TimerCountdown from './../../../timerCountdown/TimerCountdown';
 
 const Timer: FunctionComponent = () => {
   const shortBreakTimer = useSelector(
@@ -30,7 +32,7 @@ const Timer: FunctionComponent = () => {
   const [customLongBreakTime, setCustomLongBreakTime] =
     useState<number>(longBreakTimer);
   const [timer, setTimer] = useState<number>(userTime);
-  const [autoStartIsOn, setAutoStartIsOn] = useState(false);
+  const [autoStartIsOn, setAutoStartIsOn] = useState<boolean>(false);
 
   const dispatch = useDispatch();
   const active = useSelector((state: any) => state.timer.isTimerActive);
@@ -145,58 +147,29 @@ const Timer: FunctionComponent = () => {
   return (
     <Fragment>
       <br />
-      <label
-        className="toggle"
-        style={!active ? { cursor: 'pointer' } : { cursor: 'not-allowed' }}
-      >
-        <input
-          type="checkbox"
-          onChange={() => setAutoStartIsOn(!autoStartIsOn)}
-          disabled={active}
-        />
-        <span
-          className="labels"
-          data-on="Auto-Start: ON"
-          data-off="Auto-Start: OFF"
-        ></span>
-      </label>
-      <div className="state-buttons">
-        <button onClick={activateWorkState}>Working!</button>
-        <button
-          disabled={pomodoroState === 'shortBreak'}
-          onClick={() => activateBreakState(undefined, 'shortBreak')}
-        >
-          Short Break
-        </button>
-        <button
-          disabled={pomodoroState === 'longBreak'}
-          onClick={() => activateBreakState(undefined, 'longBreak')}
-        >
-          Long Break
-        </button>
-      </div>
-
-      <br />
-      <img
-        onClick={activateTask}
-        src="https://i.pinimg.com/originals/8c/5b/1e/8c5b1e51887a9c76d35c27da5a133d1d.jpg"
+      <TimerAutoStart
+        active={active}
+        setAutoStartIsOn={setAutoStartIsOn}
+        autoStartIsOn={autoStartIsOn}
       />
-      <h1 className="task">{active && taskIsAccepted && task}</h1>
-      <h1>
-        {(pomodoroState === 'shortBreak' || pomodoroState === 'longBreak') &&
-          active &&
-          randomBreakMessage}
-      </h1>
-      <h1>{pomodoroState === 'work' && active && randomWorkMessage}</h1>
-      <h1 className="timer">
-        {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
-        {active && taskIsAccepted && (
-          <BsFillSkipEndFill
-            className="skip-button"
-            onClick={skipTimerHandler}
-          />
-        )}
-      </h1>
+      <TimerBreakButtons
+        activateWorkState={activateWorkState}
+        pomodoroState={pomodoroState}
+        activateBreakState={activateBreakState}
+      />
+      <br />
+      <TimerCountdown
+        activateTask={activateTask}
+        active={active}
+        taskIsAccepted={taskIsAccepted}
+        task={task}
+        pomodoroState={pomodoroState}
+        randomBreakMessage={randomBreakMessage}
+        randomWorkMessage={randomWorkMessage}
+        minutes={minutes}
+        seconds={seconds}
+        skipTimerHandler={skipTimerHandler}
+      />
       <TimerSettings
         formSubmitHandler={formSubmitHandler}
         setCustomWorkTime={setCustomWorkTime}
