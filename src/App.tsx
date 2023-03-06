@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent } from 'react';
 import AudioPlayer from './audioplayer/components/AudioPlayer';
 import Header from './header/Header';
 import Query from './query/components/Query';
